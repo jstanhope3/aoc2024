@@ -1,23 +1,9 @@
-use std::fs::File;
-use std::io::{self, BufRead};
 use std::path::Path;
-use std::io::Read;
-
+extern crate aoc2024;
+use aoc2024::read_file_to_string;
 fn main() {
     let path = Path::new("inputs/day03.txt");
-    let display = path.display();
-    // Open the path in read-only mode, returns `io::Result<File>`
-    let mut file = match File::open(&path) {
-        Err(why) => panic!("couldn't open {}: {}", display, why),
-        Ok(file) => file,
-    };
-
-    // Read the file contents into a string, returns `io::Result<usize>`
-    let mut s = String::new();
-    match file.read_to_string(&mut s) {
-        Err(why) => panic!("couldn't read {}: {}", display, why),
-        Ok(_) => {},
-    }
+    let s: String = read_file_to_string(path);
     // s = String::from("xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"); // example from webpage
     // s = String::from("xmul(2,4)&mul[3,7]!^do()don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"); // example 2 from webpage
     let parts: Vec<&str> = s.split("mul(").collect();
