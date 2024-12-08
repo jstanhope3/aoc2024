@@ -141,15 +141,6 @@ fn main() {
         println!("middle value: {}", update.pages[middle_index]);
         sum += update.pages[middle_index];
     }
-    // for update in updates.iter() {
-    //     if update.validate_update(&rules) {
-    //         println!("{:?}", update.pages);
-    //         let middle_index = (update.pages.len() / 2);
-    //         println!("middle value: {}", update.pages[middle_index]);
-    //         sum += update.pages[middle_index];
-    //         valid_count += 1;
-    //     }
-    // }
     println!("Sum of middle pages from {} valid updates: {}",valid_count, sum);
 
 }
