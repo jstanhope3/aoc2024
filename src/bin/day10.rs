@@ -86,7 +86,7 @@ fn trace_paths(flow_map: &FlowMap, loc: (i32, i32)) -> Vec<Vec<(i32, i32)>>{
     path.push(loc);
     paths.push(path);
     let mut iter = 0;
-    while !all_paths_terminated {
+    while paths.len() >= 1 {
         all_paths_terminated = true;
         for i in 0..paths.len() {
             let current_loc = paths[i].last().unwrap().clone();
@@ -95,7 +95,7 @@ fn trace_paths(flow_map: &FlowMap, loc: (i32, i32)) -> Vec<Vec<(i32, i32)>>{
                 println!("path terminated");
                 terminated_paths.push(paths[i].clone());
                 paths.remove(i as usize);
-                continue; // path is terminated, continue;
+                break; // path is terminated, continue;
             }
             if dirs.len() == 1 {
                 println!("updating path");
@@ -108,24 +108,28 @@ fn trace_paths(flow_map: &FlowMap, loc: (i32, i32)) -> Vec<Vec<(i32, i32)>>{
                 paths[i].push(move_loc_by_dir(&current_loc, &dirs[0]));
                 for dir_i in 1..dirs.len() {
                     let mut new_path = currpath.clone();
-                    new_path.insert(0, move_loc_by_dir(&current_loc, &dirs[dir_i]));
+                    new_path.push(move_loc_by_dir(&current_loc, &dirs[dir_i]));
                     println!("path inserted");
                     paths.insert(i + 1, new_path);
                 }
-                all_paths_terminated = false;           
+                all_paths_terminated = false;
+                break;     
             }
         }
         iter += 1;
         println!("iter: {}", iter);
     }
-    return paths;
+    return terminated_paths;
 }
 
 fn score_paths(paths: &Vec<Vec<(i32, i32)>>, grid:&Grid ) -> i32 {
     let mut sum = 0;
+    let mut endpts: Vec<(i32, i32)> = Vec::new();
     for path in paths {
         let last_pos = path.last().unwrap();
+        println!("path: {:?} height: {}", path, fetch_height(grid, *last_pos));
         if fetch_height(grid, *last_pos) == 9 {
+            endpts.push(last_pos.clone());
             sum += 1;
         }
     }
