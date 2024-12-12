@@ -63,3 +63,11 @@ pub fn parse_file_to_grid(path: &Path) -> Grid {
         num_rows: grid[0].len(),
     }
 }
+
+pub fn fetch_grid_val(grid: &Grid, idx: (i32, i32)) -> char {
+    if idx.0 >= 0 && idx.0 < grid.num_rows as i32 && idx.1 >= 0 && idx.1 < grid.num_cols  as i32 {
+        return grid.cells[idx.0 as usize][idx.1 as usize];
+    } else {
+        return '\0';
+    }
+}
